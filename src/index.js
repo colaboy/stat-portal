@@ -1,10 +1,29 @@
 import './less/index.less';
-import jsonData from './data.json';
-
+import dataJson from './data.json';
+var mapChart = null;
 window.onload = function () {
   // 地图
   var container = document.getElementById('chart-map');
-  var mapChart = initMapCharts(container);
+  loadMapChart(container, dataJson.data.dots, dataJson.data.shine_dots);
+  setTimeout(() => {
+    var insertDots = [
+      {
+      "name": "赤峰",
+      "value": [118.87, 42.28, 100]
+      },
+      {
+        "name": "上海",
+        "value": [121.48,31.22, 100]
+      }
+    ];
+    var insertShineDots = [
+      {
+        "name": "南京",
+        "value": [118.78, 32.04, 200]
+      }
+    ];
+    dynamicLoadMapChart(insertDots, insertShineDots);
+  }, 2000);
   window.onresize = function () {
     var resizeTimer = '';
     if (resizeTimer) clearTimeout(resizeTimer);
@@ -17,27 +36,22 @@ window.onload = function () {
     }, 500);
   }
 }
-function initMapCharts(container) {
+function dynamicLoadMapChart(data, dataShine) {
+  mapChart.appendData(
+    {
+      seriesIndex: 1,
+      data: data
+    }
+  );
+  mapChart.appendData({
+    seriesIndex: 2,
+    data: dataShine
+  });
+}
+function loadMapChart(container, data, dataShine) {
   // 基于准备好的dom，初始化echarts实例
   // echarts.registerMap('zhongguo', zhongguoJson);
-  var myChart = echarts.init(container);
-  // 指定图表的配置项和数据
-  var data = [
-    {
-      "name": "合肥",
-      "value": [117.27, 31.86, 100]
-    },
-    {
-      "name": "武汉",
-      "value": [114.31, 30.52, 100]
-    }
-  ];
-  var dataShine = [
-    {
-      "name": "大庆",
-      "value": [125.03, 46.58, 200]
-    }
-  ];
+  mapChart = echarts.init(container);
   var option = {
     backgroundColor: {
       type: 'radial',
@@ -158,6 +172,5 @@ function initMapCharts(container) {
   };
 
   // 使用刚指定的配置项和数据显示图表。
-  myChart.setOption(option);
-  return myChart;
+  mapChart.setOption(option);
 }
