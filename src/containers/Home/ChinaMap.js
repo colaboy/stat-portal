@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// 数据
+import dataJson from './data.json';
 
 export default class ChinaMap extends Component {
-  static propTypes = {
-    dots: PropTypes.array,
-    shineDots: PropTypes.array
-  }
-
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -15,12 +11,11 @@ export default class ChinaMap extends Component {
     }
   }
   componentDidMount = () => {
-    const {dosts, shineDots} = this.props;
     // 渲染地图
     this.setState({
       mapContainer: document.getElementById('chart-map')
     }, () => {
-      this.loadMapChart(this.state.mapContainer, dosts, shineDots);
+      this.loadMapChart(this.state.mapContainer, dataJson.data.dots, dataJson.data.shine_dots);
     });
     // 自适应宽高
     window.onresize = this.resizeMapChart;
