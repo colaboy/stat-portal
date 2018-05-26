@@ -1,10 +1,11 @@
 import './less/index.less';
 import dataJson from './data.json';
+var mapContainer = null;
 var mapChart = null;
 window.onload = function () {
   // 地图
-  var container = document.getElementById('chart-map');
-  loadMapChart(container, dataJson.data.dots, dataJson.data.shine_dots);
+  mapContainer = document.getElementById('chart-map');
+  loadMapChart(mapContainer, dataJson.data.dots, dataJson.data.shine_dots);
   setTimeout(() => {
     var insertDots = [
       {
@@ -24,17 +25,18 @@ window.onload = function () {
     ];
     dynamicLoadMapChart(insertDots, insertShineDots);
   }, 2000);
-  window.onresize = function () {
-    var resizeTimer = '';
+  window.onresize = resizeMapChart;
+}
+function resizeMapChart () {
+  var resizeTimer = '';
     if (resizeTimer) clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function () {
       var windowWidth = window.innerWidth || document.documentElement.clientWidth;
       var windowHeight = window.innerHeight || document.documentElement.clientHeight;
-      container.style.width = windowWidth + 'px';
-      container.style.height = windowHeight + 'px';
+      mapContainer.style.width = windowWidth + 'px';
+      mapContainer.style.height = windowHeight + 'px';
       mapChart.resize();
     }, 500);
-  }
 }
 function dynamicLoadMapChart(data, dataShine) {
   mapChart.appendData(
