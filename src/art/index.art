@@ -1,0 +1,8 @@
+<div class="page instruction-bg">
+  <div class="instruction-title"></div>
+  <div class="instruction-build-after"></div>
+  <div class="instruction-truck1"></div>
+  <div class="instruction-truck2"></div>
+  <div class="instruction-build-front"></div>
+  <div class="instruction-reader">{{data.reader}}</div>
+</div>
