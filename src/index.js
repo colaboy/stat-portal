@@ -1,20 +1,30 @@
+import FullScreen from './utils/fullscreen.js';
 import './less/index.less';
 import dataJson from './data.json';
+
+// 进入和退出全屏
+document.addEventListener('keydown', function (e) {
+  if (e.keyCode === 13) {
+    FullScreen.toggle();
+  }
+}, false);
+
 var mapContainer = null;
 var mapChart = null;
-window.onload = function () {
+// 文档加载完成
+window.addEventListener('load', function (e) {
   // 地图
   mapContainer = document.getElementById('chart-map');
   loadMapChart(mapContainer, dataJson.data.dots, dataJson.data.shine_dots);
   setTimeout(() => {
     var insertDots = [
       {
-      "name": "赤峰",
-      "value": [118.87, 42.28, 100]
+        "name": "赤峰",
+        "value": [118.87, 42.28, 100]
       },
       {
         "name": "上海",
-        "value": [121.48,31.22, 100]
+        "value": [121.48, 31.22, 100]
       }
     ];
     var insertShineDots = [
@@ -26,18 +36,20 @@ window.onload = function () {
     dynamicLoadMapChart(insertDots, insertShineDots);
   }, 2000);
   window.onresize = resizeMapChart;
-}
-function resizeMapChart () {
+}, false);
+
+function resizeMapChart() {
   var resizeTimer = '';
-    if (resizeTimer) clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function () {
-      var windowWidth = window.innerWidth || document.documentElement.clientWidth;
-      var windowHeight = window.innerHeight || document.documentElement.clientHeight;
-      mapContainer.style.width = windowWidth + 'px';
-      mapContainer.style.height = windowHeight + 'px';
-      mapChart.resize();
-    }, 500);
+  if (resizeTimer) clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(function () {
+    var windowWidth = window.innerWidth || document.documentElement.clientWidth;
+    var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    mapContainer.style.width = windowWidth + 'px';
+    mapContainer.style.height = windowHeight + 'px';
+    mapChart.resize();
+  }, 500);
 }
+
 function dynamicLoadMapChart(data, dataShine) {
   mapChart.appendData(
     {
@@ -50,6 +62,7 @@ function dynamicLoadMapChart(data, dataShine) {
     data: dataShine
   });
 }
+
 function loadMapChart(container, data, dataShine) {
   // 基于准备好的dom，初始化echarts实例
   // echarts.registerMap('zhongguo', zhongguoJson);
